@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LinkController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/shortner', [LinkController::class, 'store']);
+
+
+Route::get('/{shortcode}', [LinkController::class, 'restore']);
