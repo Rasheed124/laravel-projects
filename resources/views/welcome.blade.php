@@ -44,11 +44,15 @@
                 Shorten URL
             </button>
 
-            {{-- <div>
-            <label class="block text-sm font-medium text-gray-600">Short URL</label>
-            <input type="text" placeholder="https://short.ly/abc123"
-                class="mt-1 w-full px-4 py-2 border rounded-lg bg-gray-100" readonly />
-        </div> --}}
+            <div>
+                <label class="block text-sm font-medium text-gray-600">Custom Code (Optional)</label>
+                <input type="text" name="short_code" placeholder="my-link"
+                    class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none" />
+            </div>
+
+              @error('short_code')
+                <span class="text-red-500 text-center w-full ">{{ $message }}</span>
+            @enderror
         </form>
     </div>
 

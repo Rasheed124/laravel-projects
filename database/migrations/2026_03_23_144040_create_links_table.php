@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('original_url');
             // Perfomance structure - index  
             $table->string('short_code')->unique()->index();
+            $table->unsignedBigInteger('clicks')->default(0);
             $table->timestamps();
         });
     }
