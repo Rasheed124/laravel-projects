@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\LinkController;
 use Illuminate\Support\Facades\Route;
+use Spatie\Sheets\Facades\Sheets;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/posts', function () {
+
+    $postsRepository = Sheets::collection('posts')->all();
+
+
+    return view('posts.index', ['postsRepo' => $postsRepository]);
 });
 
-Route::post('/shortner', [LinkController::class, 'store']);
+Route::post('/posts/{post}', function ($post) {
+    return view('posts.show', ['post' => $post]);
+});
 
-
-Route::get('/{shortcode}', [LinkController::class, 'restore']);
+// Route::get('/{shortcode}', [LinkController::class, 'restore']);
