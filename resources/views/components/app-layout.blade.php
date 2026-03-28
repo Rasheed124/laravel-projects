@@ -15,6 +15,8 @@
         <h2>{{ config('name') }}</h2>
     </a>
     {{ $slot }}
+
+    @stack('scripts');
 </body>
 
 </html>
