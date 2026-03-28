@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactNoteController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,49 +20,39 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', WelcomeController::class);
+
+// Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+
+// Route::get('/contacts/create', [ContactController::class, 'create'])->name('contacts.create');
+
+// Route::get('/contacts/{id}', [ContactController::class, 'show'])->name('contacts.show');
+
+Route::controller(ContactController::class)->name('contacts.')->group(function () {
+
+    Route::get('/contacts', 'index')->name('index');
+
+    Route::get('/contacts/create', 'create')->name('create');
+
+    Route::get('/contacts/{id}', 'show')->name('show');
+
 });
 
-function getContacts()
-{
-    return [
-        1 => ['id' => 1, 'name' => 'Name 1', 'phone' => '1234567890'],
-        2 => ['id' => 2, 'name' => 'Name 2', 'phone' => '2345678901'],
-        3 => ['id' => 3, 'name' => 'Name 3', 'phone' => '3456789012'],
-    ];
-}
-Route::get('/contacts', function () {
+Route::resource('companies', CompanyController::class);
+Route::resources([
+    'tags' => TagController::class,
+    'tasks' => TaskController::class,
+]);
 
-    $contacts = getContacts();
+// Route::resource('contact.notes',  ContactNoteController::class)->shallow();
 
-    $companies = [
-        1 => ['name' => 'Company One', 'contacts' => 3],
-        2 => ['name' => 'Company One', 'contacts' => 3],
-    ];
-
-    return view('contacts.index', compact('contacts', 'companies'));
-
-})->name('contacts.index');
-
-Route::get('/contacts/create', function () {
-
-    $contacts = [
-        1 => ['name' => 'Name 1', 'phone' => '1234567890'],
-        2 => ['name' => 'Name 2', 'phone' => '2345678901'],
-        3 => ['name' => 'Name 3', 'phone' => '3456789012'],
-    ];
-    return view('contacts.create', compact('contacts'));
-
-})->name('contacts.create');
-
-Route::get('/contacts/show', function () {
-
-    $contacts = [
-        1 => ['name' => 'Name 1', 'phone' => '1234567890'],
-        2 => ['name' => 'Name 2', 'phone' => '2345678901'],
-        3 => ['name' => 'Name 3', 'phone' => '3456789012'],
-    ];
-    return view('contacts.show', compact('contacts'));
-
-})->name('contacts.show');
+// Route::resource('/activities', ActivityController::class)->except([
+//     'index', 'show'
+// ]);
+// Route::resource('/activities', ActivityController::class)->names([
+//     'index' => 'activities.all',
+//     'show' => 'activities.view'
+// ]);
+Route::resource('/activities', ActivityController::class)->parameters([
+    'activities' => 'active'
+]);
