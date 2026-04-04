@@ -47,8 +47,9 @@ class ContactController extends Controller
         // $contacts = $this->getContacts();
 
         $companies = $this->company->companies();
+        $contact = new Contact();
 
-        return view('contacts.create', compact('companies'));
+      return view('contacts.create', compact('companies', 'contact'));
 
     }
 
