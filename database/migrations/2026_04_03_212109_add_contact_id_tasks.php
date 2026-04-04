@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('description')->nullable();
-            $table->boolean('status')->nullable();
-            $table->date('due_at')->nullable();
-            $table->timestamps();
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->foreignId('contact_id')->after("id")->constrained()->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 
@@ -30,6 +25,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contact');
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->dropForeign(['contact_id']);
+            $table->dropColumn('contact_id');
+        });
     }
 };

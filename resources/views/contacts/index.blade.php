@@ -4,7 +4,7 @@
 
  @section('content')
      <main class="py-5">
-         <div class="container">
+         <div class="container" style="max-width: 1300px; margin:0 auto;">
              <div class="row">
                  <div class="col-md-12">
                      <div class="card">
@@ -20,6 +20,10 @@
                          </div>
                          <div class="card-body">
                              @includeUnless(empty($companies), 'contacts._filter', ['contacts' => $contacts])
+
+                             @if ($message = session('message'))
+                                 <div class="alert alert-success">{{ $message }}</div>
+                             @endif
                              {{-- @includeWhen(!empty($companies) , 'contacts._filter', ['contacts' => $contacts]); --}}
                              {{-- @includeIF('contacts._filter', ['contacts' => $contacts]); --}}
                              {{-- @includeif('contact._filter', ['contacts' => $contacts]); --}}
@@ -31,39 +35,27 @@
                                          <th scope="col">First Name</th>
                                          <th scope="col">Phone Number</th>
                                          <th scope="col">Email</th>
+                                         <th scope="col">Address</th>
                                          <th scope="col">Company</th>
                                          <th scope="col">Actions</th>
                                      </tr>
                                  </thead>
                                  <tbody>
-                                     {{-- @forelse ($contacts as $id => $contact)
-                                      
-                                        @include('contacts._contact', ['contact', $contact])
+                                     @forelse ($contacts as $index => $contact)
+                                         @include('contacts._contact', ['contact', $contact])
                                      @empty
-                                         <p>No Contact Found</p>
-                                     @endforelse --}}
+                                         @include('contacts._empty')
+                                     @endforelse
 
-                                     @each('contacts._contact', $contacts, 'contact', 'contacts._empty')
+                                     {{-- @each('contacts._contact', $contacts, 'contact', 'contacts._empty') --}}
 
 
 
                                  </tbody>
                              </table>
 
-                             <nav class="mt-4">
-                                 <ul class="pagination justify-content-center">
-                                     <li class="page-item disabled">
-                                         <a class="page-link" href="#" tabindex="-1"
-                                             aria-disabled="true">Previous</a>
-                                     </li>
-                                     <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                     <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                     <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                     <li class="page-item">
-                                         <a class="page-link" href="#">Next</a>
-                                     </li>
-                                 </ul>
-                             </nav>
+                             {{ $contacts->withQueryString()->links() }}
+                             {{-- {{ $contacts->appends(request()->only('orderBy', 'q'))->links() }} --}}
                          </div>
                      </div>
                  </div>
