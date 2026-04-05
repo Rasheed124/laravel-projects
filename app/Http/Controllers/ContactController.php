@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Repository\CompanyRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ContactController extends Controller
 {
@@ -18,14 +19,31 @@ class ContactController extends Controller
         // dd($request->sort_by);
 
         $companies = $this->company->companies();
+        // DB::enableQueryLog();
 
-        // $contacts = Contact::latest()->paginate(10);
-
+        // $contacts = Contact::latest()->where(function ($query) {
+        //     if ($companyId = request()->query("company_id")) {
+        //         $query->where("company_id", $companyId);
+        //     }
+        //     if ($search = request()->query('search')) {
+        //         $query->where("first_name", "LIKE", "%{$search}%");
+        //         $query->orWhere("last_name", "LIKE", "%{$search}%");
+        //         $query->orWhere("email", "LIKE", "%{$search}%");
+        //     }
+        // })->paginate(10);
         $contacts = Contact::latest()->where(function ($query) {
             if ($companyId = request()->query("company_id")) {
                 $query->where("company_id", $companyId);
             }
+        })->where(function ($query) {
+            if ($search = request()->query('search')) {
+                $query->where("first_name", "LIKE", "%{$search}%");
+                $query->orWhere("last_name", "LIKE", "%{$search}%");
+                $query->orWhere("email", "LIKE", "%{$search}%");
+            }
         })->paginate(10);
+
+        // dump(DB::getQueryLog());
 
         // $contactsCollection = Contact::latest()->get();
         // $perPage            = 10;
@@ -47,9 +65,9 @@ class ContactController extends Controller
         // $contacts = $this->getContacts();
 
         $companies = $this->company->companies();
-        $contact = new Contact();
+        $contact   = new Contact();
 
-      return view('contacts.create', compact('companies', 'contact'));
+        return view('contacts.create', compact('companies', 'contact'));
 
     }
 
@@ -121,12 +139,11 @@ class ContactController extends Controller
         return redirect()->route('contacts.index')->with('message', 'Contact has been updated successfully');
     }
 
-    protected function getContacts()
+    public function destroy($id)
     {
-        return [
-            1 => ['id' => 1, 'name' => 'Name 1', 'phone' => '1234567890'],
-            2 => ['id' => 2, 'name' => 'Name 2', 'phone' => '2345678901'],
-            3 => ['id' => 3, 'name' => 'Name 3', 'phone' => '3456789012'],
-        ];
+        $contact = Contact::findOrFail($id);
+        $contact->delete();
+        // return back()->with('message', 'Contact has been removed successfully');
+        return redirect()->route('contacts.index')->with('message', 'Contact has been removed successfully');
     }
 }

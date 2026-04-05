@@ -1,10 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\TagController;
-use App\Http\Controllers\TaskController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,17 +25,19 @@ Route::get('/', WelcomeController::class);
 
 // Route::get('/contacts/{id}', [ContactController::class, 'show'])->name('contacts.show');
 
-Route::controller(ContactController::class)->name('contacts.')->group(function () {
+// Route::controller(ContactController::class)->name('contacts.')->group(function () {
 
-    Route::get('/contacts', 'index')->name('index');
-    Route::get('/contacts/create', 'create')->name('create');
-    Route::post('/contacts', 'store')->name('store');   
+//     Route::get('/contacts', 'index')->name('index');
+//     Route::get('/contacts/create', 'create')->name('create');
+//     Route::post('/contacts', 'store')->name('store');
+//     Route::get('/contacts/{id}', 'show')->name('show');
+//     Route::get('/contacts/edit/{id}', 'edit')->name('edit');
+//     Route::put('/contacts/{id}', 'update')->name('update');
+//     Route::delete('/contacts/{id}', 'destroy')->name('destroy');
 
-    Route::get('/contacts/{id}', 'show')->name('show');
-    Route::get('/contacts/edit/{id}', 'edit')->name('edit');
-    Route::put('/contacts/{id}', 'update')->name('update');
+// });
 
-});
+Route::resource('/contacts', ContactController::class);
 
 // Route::resource('companies', CompanyController::class);
 // Route::resources([
