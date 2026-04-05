@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         //     ContactSeeder::class,
         // ]);
         // Company::factory()->count(10)->create();
-        Company::factory(100)->hasContacts(50)->create();
+        Company::factory(10)->hasContacts(10)->create();
 
     }
 }
