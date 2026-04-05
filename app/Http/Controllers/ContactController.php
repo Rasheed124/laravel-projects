@@ -91,16 +91,7 @@ class ContactController extends Controller
 
     }
 
-    // public function update($id)
-    // {
-
-    //     $companies = $this->company->companies();
-
-    //     $contact = Contact::findOrFail($id);
-
-    //     return view('contacts.edit', compact('companies', 'contact'));
-
-    // }
+ 
 
     public function update(Request $request, $id)
     {
