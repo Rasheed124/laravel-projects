@@ -58,7 +58,7 @@
                                          $showTrashButtons = request()->query('trash') ? true : false;
                                      @endphp
                                      @forelse ($contacts as $index => $contact)
-                                         @include('contacts._contact', ['contact', $contact])
+                                         @include('contacts._contact', ['contact' => $contact])
                                      @empty
                                          @include('contacts._empty')
                                      @endforelse
