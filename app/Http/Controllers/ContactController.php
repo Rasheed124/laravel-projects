@@ -23,17 +23,7 @@ class ContactController extends Controller
         if (request()->query('trash')) {
             $query->onlyTrashed();
         }
-        $contacts = $query->latest()->where(function ($query) {
-            if ($companyId = request()->query("company_id")) {
-                $query->where("company_id", $companyId);
-            }
-        })->where(function ($query) {
-            if ($search = request()->query('search')) {
-                $query->where("first_name", "LIKE", "%{$search}%");
-                $query->orWhere("last_name", "LIKE", "%{$search}%");
-                $query->orWhere("email", "LIKE", "%{$search}%");
-            }
-        })->paginate(10);
+        $contacts = $query->allowedSorts('first_name')->allowedFilters('company_id')->allowedSearch(['first_name', 'last_name', 'email'])->paginate(10);
 
         return view('contacts.index', compact('contacts', 'companies'));
 
@@ -91,8 +81,6 @@ class ContactController extends Controller
 
     }
 
- 
-
     public function update(Request $request, $id)
     {
 
@@ -114,7 +102,7 @@ class ContactController extends Controller
     {
         $contact = Contact::findOrFail($id);
         $contact->delete();
-      
+
         $redirect = request()->query('redirect');
         return ($redirect ? redirect()->route($redirect) : back())
             ->with('message', 'Contact has been moved to trash.')
