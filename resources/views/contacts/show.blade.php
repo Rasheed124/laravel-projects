@@ -58,7 +58,7 @@
                                       <hr>
                                       <div class="form-group row mb-0">
                                           <div class="col-md-9 offset-md-3">
-                                              <a href="#" class="btn btn-info">Edit</a>
+                                              <a href="{{ route('contacts.edit', $contact->id) }}" class="btn btn-info">Edit</a>
                                               <form
                                                   action="{{ route('contacts.destroy', ['contact' => $contact->id, 'redirect' => 'contacts.index']) }}"
                                                   method="POST" style="display: inline">

@@ -2,7 +2,7 @@
      {{-- <tr @if ($loop->first) class="table-primary" @endif> --}}
      <th scope="first">{{ $contacts->firstItem() + $index }}</th>
      <td>{{ $contact->first_name }}</td>
-     <td>{{ $contact->phone }}</td>
+     <td>{{ $contact->last_name }}</td>
      <td>{{ $contact->email }}</td>
      <td>{{ $contact->address }}</td>
      <td>{{ $contact->company->name }}</td>
