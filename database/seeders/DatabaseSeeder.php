@@ -1,10 +1,11 @@
 <?php
-
 namespace Database\Seeders;
 
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,11 +16,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Create an Admin/Test User
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name'     => 'Admin User',
+            'username' => 'admin',
+            'email'    => 'admin@blognest.com',
+            'password' => Hash::make('password123'),
+            'country'  => 'Nigeria',
+            'city'     => 'Lagos',
+            'role' => Role::Admin,
         ]);
+
+        // Create 10 random Authors
+        User::factory(10)->create();
     }
 }

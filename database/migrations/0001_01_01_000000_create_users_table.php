@@ -11,12 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('username')->unique()->nullable(); // For @author handles
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            // New Profile Columns
+            $table->text('about_me')->nullable();
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
+            $table->json('social_links')->nullable(); // Stores multiple links as JSON
+            $table->string('profile_image')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('website')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });

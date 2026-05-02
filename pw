@@ -1,3 +1,6 @@
+RasheedAdmin@2023
+
+
 @props([
     'title' => '',
 ])
@@ -8,14 +11,10 @@
     <meta charset="utf-8">
     <title>{{ $title }} | BlogNest</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('css/vendors/flatpickr.min.css') }}" rel="stylesheet">
 
-
-    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-    <link rel="stylesheet" href="{{ asset('style.css') }}">
-
-    <script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>    
         if (localStorage.getItem('dark-mode') === 'false' || !('dark-mode' in localStorage)) {
             document.querySelector('html').classList.remove('dark');
             document.querySelector('html').style.colorScheme = 'light';
@@ -28,15 +27,28 @@
 
 <body class="font-inter antialiased bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400">
 
+    <script>
+        if (localStorage.getItem('sidebar-expanded') == 'true') {
+            document.querySelector('body').classList.add('sidebar-expanded');
+        } else {
+            document.querySelector('body').classList.remove('sidebar-expanded');
+        }
+    </script>
+
     <main class="bg-white dark:bg-gray-900">
+
         <div class="relative flex">
 
+            <!-- Content -->
             <div class="w-full md:w-1/2">
+
                 <div class="min-h-[100dvh] h-full flex flex-col after:flex-1">
 
+                    <!-- Header -->
                     <div class="flex-1">
                         <div class="flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
-                            <a class="block" href="{{ url('/') }}">
+                            <!-- Logo -->
+                            <a class="block" href="index.html">
                                 <svg class="fill-violet-500" xmlns="http://www.w3.org/2000/svg" width="32"
                                     height="32">
                                     <path
@@ -46,17 +58,22 @@
                         </div>
                     </div>
 
+
+
                     {{ $slot }}
 
                 </div>
+
             </div>
 
+            <!-- Image -->
             <div class="hidden md:block absolute top-0 bottom-0 right-0 md:w-1/2" aria-hidden="true">
-                <img class="object-cover object-center w-full h-full" src="{{ asset('images/auth-image.jpg') }}"
-                    width="760" height="1024" alt="Authentication image" />
+                <img class="object-cover object-center w-full h-full" src="./images/meetup-image.jpg" width="760"
+                    height="1024" alt="Authentication image" />
             </div>
 
         </div>
+
     </main>
 
     <script src="{{ asset('js/vendors/alpinejs.min.js') }}" defer></script>
