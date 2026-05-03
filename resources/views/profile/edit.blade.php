@@ -6,6 +6,56 @@
             <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Account Settings</h1>
         </div>
 
+        <!-- Global Notification Area -->
+        <div class="mb-6">
+            {{-- Success Messages --}}
+            @if (session('status'))
+                <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
+                    class="flex items-center p-4 mb-4 text-sm text-green-800 border border-green-200 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800"
+                    role="alert">
+                    <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                    </svg>
+                    <div>
+                        <span class="font-bold">Success!</span>
+                        @if (session('status') === 'profile-updated')
+                            Profile information updated.
+                        @endif
+                        @if (session('status') === 'password-updated')
+                            Password changed successfully.
+                        @endif
+                    </div>
+                </div>
+            @endif
+
+            {{-- Validation Error Summary --}}
+            @if ($errors->any() || $errors->updatePassword->any())
+                <div class="flex p-4 mb-4 text-sm text-red-800 border border-red-200 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800"
+                    role="alert">
+                    <svg class="flex-shrink-0 inline w-4 h-4 mr-3 mt-[2px]" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9 5a1 1 0 1 1 2 0v4a1 1 0 1 1-2 0V5Zm1 10a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z" />
+                    </svg>
+                    <div>
+                        <span class="font-bold">Please correct the following errors:</span>
+                        <ul class="mt-1.5 ml-4 list-disc list-inside">
+                            {{-- Profile Errors --}}
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                            {{-- Password Bag Errors --}}
+                            @foreach ($errors->updatePassword->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            @endif
+        </div>
+
         <div class="bg-white dark:bg-gray-800 shadow-sm rounded-xl mb-8">
             <div class="flex flex-col md:flex-row md:-mr-px">
 
@@ -23,33 +73,69 @@
                             <h2 class="text-2xl text-gray-800 dark:text-gray-100 font-bold mb-5">My Account</h2>
 
                             <!-- Profile Picture -->
-                            <section x-data="{ photoName: null, photoPreview: null }">
+                            <section x-data="{
+                                photoPreview: null,
+                                isDeleted: false,
+                                currentPhoto: '{{ $user->profileImageUrl() }}',
+                                defaultPhoto: '{{ asset('images/user-default.jpg') }}'
+                            }">
                                 <div class="flex items-center">
                                     <div class="mr-4">
-                                        <!-- Current Photo / Preview Photo -->
-                                        <template x-if="! photoPreview">
-                                            <img class="w-20 h-20 rounded-full object-cover"
-                                                src="{{ $user->profileImageUrl() }}" alt="{{ $user->name }}" />
-                                        </template>
-                                        <template x-if="photoPreview">
-                                            <img class="w-20 h-20 rounded-full object-cover" :src="photoPreview" />
-                                        </template>
+                                        <!-- Image Display Logic -->
+                                        <div class="relative w-20 h-20">
+                                            <!-- 1. New Preview -->
+                                            <template x-if="photoPreview">
+                                                <img class="w-20 h-20 rounded-full object-cover"
+                                                    :src="photoPreview" />
+                                            </template>
+
+                                            <!-- 2. Current Photo (if not deleted and no preview) -->
+                                            <template x-if="!photoPreview && !isDeleted">
+                                                <img class="w-20 h-20 rounded-full object-cover"
+                                                    :src="currentPhoto" />
+                                            </template>
+
+                                            <!-- 3. Placeholder (if deleted and no preview) -->
+                                            <template x-if="isDeleted && !photoPreview">
+                                                <img class="w-20 h-20 rounded-full object-cover"
+                                                    :src="defaultPhoto" />
+                                            </template>
+                                        </div>
                                     </div>
 
-                                    <label for="avatar-upload"
-                                        class="cursor-pointer btn-sm dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300">
-                                        Change
-                                    </label>
+                                    <div class="flex flex-wrap gap-2">
+                                        <!-- Change Button -->
+                                        <label for="avatar-upload"
+                                            class="cursor-pointer btn-sm dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300">
+                                            Change
+                                        </label>
+
+                                        <!-- Remove Button: Always visible if there is an image to remove -->
+                                        <button type="button"
+                                            class="btn-sm bg-rose-100 text-rose-600 hover:bg-rose-200 border-transparent"
+                                            x-on:click="
+                                                    photoPreview = null; 
+                                                    $refs.photo.value = null;
+                                                    isDeleted = true;
+                                                    $refs.clearInput.value = '1';
+                                                ">
+                                            Remove
+                                        </button>
+                                    </div>
+
+                                    <!-- Hidden input to tell the backend to delete the file -->
+                                    <input type="hidden" name="clear_profile_image" x-ref="clearInput" value="0">
 
                                     <input type="file" id="avatar-upload" name="profile_image" class="hidden"
                                         accept="image/*" x-ref="photo"
                                         x-on:change="
-                                                photoName = $refs.photo.files[0].name;
+                                            if ($refs.photo.files.length > 0) {
+                                                isDeleted = false;
+                                                $refs.clearInput.value = '0';
                                                 const reader = new FileReader();
-                                                reader.onload = (e) => {
-                                                    photoPreview = e.target.result;
-                                                };
+                                                reader.onload = (e) => { photoPreview = e.target.result; };
                                                 reader.readAsDataURL($refs.photo.files[0]);
+                                            }
                                         ">
                                 </div>
                                 <x-input-error :messages="$errors->get('profile_image')" class="mt-2" />
@@ -82,6 +168,30 @@
                                         <x-input-error :messages="$errors->get('country')" class="mt-1" />
                                     </div>
                                 </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+                                    <!-- Phone Number -->
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1" for="phone">Phone
+                                            Number</label>
+                                        <input id="phone" name="phone" class="form-input w-full" type="tel"
+                                            value="{{ old('phone', $user->phone) }}" placeholder="+1 (555) 000-0000" />
+                                        <x-input-error :messages="$errors->get('phone')" class="mt-1" />
+                                    </div>
+
+                                    <!-- Personal/Company Website -->
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1" for="website">Website</label>
+                                        <div class="relative">
+                                            <input id="website" name="social_links[website]"
+                                                class="form-input w-full " type="text"
+                                                value="{{ old('website', $user->website ?? '') }}"
+                                                placeholder="https://www.yourwebsite.com" />
+
+                                        </div>
+                                        <x-input-error :messages="$errors->get('website')" class="mt-1" />
+                                    </div>
+                                </div>
                             </section>
 
                             <!-- Email -->
@@ -110,6 +220,60 @@
                                 </div>
                                 <x-input-error :messages="$errors->get('about_me')" class="mt-1" />
                             </section>
+
+
+                            <!-- Social Links -->
+                            <!-- Social Links (JSON) -->
+                            <section>
+                                <h3 class="text-xl leading-snug text-gray-800 dark:text-gray-100 font-bold mb-1">Social
+                                    Profiles</h3>
+                                <div class="text-sm">Connect your social accounts for your public profile.</div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+                                    <!-- Twitter -->
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1" for="twitter">Twitter
+                                            (X)</label>
+                                        <input id="twitter" name="social_links[twitter]" class="form-input w-full"
+                                            type="text"
+                                            value="{{ old('social_links.twitter', $user->social_links['twitter'] ?? '') }}"
+                                            placeholder="https://x.com/username" />
+                                        <x-input-error :messages="$errors->get('social_links.twitter')" class="mt-1" />
+                                    </div>
+
+                                    <!-- Facebook -->
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1" for="facebook">Facebook</label>
+                                        <input id="facebook" name="social_links[facebook]" class="form-input w-full"
+                                            type="text"
+                                            value="{{ old('social_links.facebook', $user->social_links['facebook'] ?? '') }}"
+                                            placeholder="https://facebook.com/username" />
+                                        <x-input-error :messages="$errors->get('social_links.facebook')" class="mt-1" />
+                                    </div>
+
+                                    <!-- Instagram -->
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1"
+                                            for="instagram">Instagram</label>
+                                        <input id="instagram" name="social_links[instagram]"
+                                            class="form-input w-full" type="text"
+                                            value="{{ old('social_links.instagram', $user->social_links['instagram'] ?? '') }}"
+                                            placeholder="https://instagram.com/username" />
+                                        <x-input-error :messages="$errors->get('social_links.instagram')" class="mt-1" />
+                                    </div>
+
+                                    <!-- LinkedIn -->
+                                    <div>
+                                        <label class="block text-sm font-medium mb-1" for="linkedin">LinkedIn</label>
+                                        <input id="linkedin" name="social_links[linkedin]" class="form-input w-full"
+                                            type="text"
+                                            value="{{ old('social_links.linkedin', $user->social_links['linkedin'] ?? '') }}"
+                                            placeholder="https://linkedin.com/in/username" />
+                                        <x-input-error :messages="$errors->get('social_links.linkedin')" class="mt-1" />
+                                    </div>
+                                </div>
+                            </section>
+
                         </div>
 
                         <!-- Panel footer -->
@@ -123,7 +287,7 @@
                                         </span>
                                     @endif
 
-                                    <a href="{{ route('profile.edit') }}"
+                                    <a href="{{ route('dashboard') }}"
                                         class="btn dark:bg-gray-800 border-gray-200 dark:border-gray-700/60 hover:border-gray-300 dark:hover:border-gray-600 text-gray-800 dark:text-gray-300">Cancel</a>
 
                                     <button type="submit"
