@@ -8,6 +8,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -55,7 +56,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password'          => 'hashed',
             'social_links'      => 'array',
-            'role' => Role::class, 
+            'role'              => Role::class,
         ];
     }
 
@@ -67,5 +68,14 @@ class User extends Authenticatable
     public function isAuthor(): bool
     {
         return $this->role === Role::Author;
+    }
+
+    public function profileImageUrl()
+    {
+        if ($this->profile_image && Storage::disk('public')->exists($this->profile_image)) {
+            return Storage::url($this->profile_image);
+        }
+
+        return asset('images/user-default.jpg'); 
     }
 }

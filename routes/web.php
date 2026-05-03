@@ -12,9 +12,22 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // All routes inside here will start with /profile/
+    Route::prefix('profile')->as('profile.')->group(function () {
+
+        Route::get('/settings', [ProfileController::class, 'edit'])->name('edit');
+
+        Route::patch('/settings', [ProfileController::class, 'update'])->name('update');
+
+        Route::delete('/settings', [ProfileController::class, 'destroy'])->name('destroy');
+
+        // URL: /profile/notifications | Route Name: profile.notifications
+        Route::get('/notifications', [ProfileController::class, 'notification'])->name('notifications');
+    });
+
 });
 
-require __DIR__.'/auth.php';
+
+
+require __DIR__ . '/auth.php';
