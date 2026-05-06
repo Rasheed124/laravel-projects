@@ -19,7 +19,6 @@ class DashboardController extends Controller
         $labels = [];
         $data   = [];
 
-        // Fill in the last 6 months even if they are empty
         for ($i = 5; $i >= 0; $i--) {
             $month    = now()->subMonths($i)->format('m-01-Y');
             $labels[] = $month;
