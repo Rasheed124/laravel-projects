@@ -57,6 +57,7 @@
     <script src="{{ asset('js/dashboard-charts.js') }}"></script>
     <script src="{{ asset('js/vendors/flatpickr.js') }}"></script>
     <script src="{{ asset('js/flatpickr-init.js') }}"></script>
+    @stack('scripts')
 
 </body>
 

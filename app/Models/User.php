@@ -76,6 +76,18 @@ class User extends Authenticatable
             return Storage::url($this->profile_image);
         }
 
-        return asset('images/user-default.jpg'); 
+        return asset('images/user-default.jpg');
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }
+
+// 18A furniture
