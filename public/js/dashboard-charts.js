@@ -53,597 +53,9 @@ const chartAreaGradient = (ctx, chartArea, colorStops) => {
     return gradient;
 };
 
-// Init #dashboard-01 chart
-// const dashboardCard01 = () => {
-//   const ctx = document.getElementById('dashboard-card-01');
-//   if (!ctx) return;
 
-//   const darkMode = localStorage.getItem('dark-mode') === 'true';
 
-//   const tooltipBodyColor = {
-//     light: '#6B7280',
-//     dark: '#9CA3AF'
-//   };
 
-//   const tooltipBgColor = {
-//     light: '#ffffff',
-//     dark: '#374151'
-//   };
-
-//   const tooltipBorderColor = {
-//     light: '#E5E7EB',
-//     dark: '#4B5563'
-//   };
-
-//   // eslint-disable-next-line no-unused-vars
-//   const chart = new Chart(ctx, {
-//     type: 'line',
-//     data: {
-//       labels: [
-//         '12-01-2022', '01-01-2023', '02-01-2023',
-//         '03-01-2023', '04-01-2023', '05-01-2023',
-//         '06-01-2023', '07-01-2023', '08-01-2023',
-//         '09-01-2023', '10-01-2023', '11-01-2023',
-//         '12-01-2023', '01-01-2024', '02-01-2024',
-//         '03-01-2024', '04-01-2024', '05-01-2024',
-//         '06-01-2024', '07-01-2024', '08-01-2024',
-//         '09-01-2024', '10-01-2024', '11-01-2024',
-//         '12-01-2024', '01-01-2025',
-//       ],
-//       datasets: [
-//         // Indigo line
-//         {
-//           data: [
-//             732, 610, 610, 504, 504, 504, 349,
-//             349, 504, 342, 504, 610, 391, 192,
-//             154, 273, 191, 191, 126, 263, 349,
-//             252, 423, 622, 470, 532,
-//           ],
-//           fill: true,
-//           backgroundColor: function(context) {
-//             const chart = context.chart;
-//             const {ctx, chartArea} = chart;
-//             return chartAreaGradient(ctx, chartArea, [
-//               { stop: 0, color: `rgba(${hexToRGB('#8470FF')}, 0)` },
-//               { stop: 1, color: `rgba(${hexToRGB('#8470FF')}, 0.2)` }
-//             ]);
-//           },
-//           borderColor: '#8470FF',
-//           borderWidth: 2,
-//           pointRadius: 0,
-//           pointHoverRadius: 3,
-//           pointBackgroundColor: '#8470FF',
-//           pointHoverBackgroundColor: '#8470FF',
-//           pointBorderWidth: 0,
-//           pointHoverBorderWidth: 0,
-//           clip: 20,
-//           tension: 0.2
-//         },
-//         // Gray line
-//         {
-//           data: [
-//             532, 532, 532, 404, 404, 314, 314,
-//             314, 314, 314, 234, 314, 234, 234,
-//             314, 314, 314, 388, 314, 202, 202,
-//             202, 202, 314, 720, 642,
-//           ],
-//           borderColor: `rgba(${hexToRGB('#6B7280')}, 0.25)`,
-//           borderWidth: 2,
-//           pointRadius: 0,
-//           pointHoverRadius: 3,
-//           pointBackgroundColor: `rgba(${hexToRGB('#6B7280')}, 0.25)`,
-//           clip: 20,
-//           tension: 0.2
-//         },
-//       ],
-//     },
-//     options: {
-//       layout: {
-//         padding: 20,
-//       },
-//       scales: {
-//         y: {
-//           display: false,
-//           beginAtZero: true,
-//         },
-//         x: {
-//           type: 'time',
-//           time: {
-//             parser: 'MM-DD-YYYY',
-//             unit: 'month',
-//           },
-//           display: false,
-//         },
-//       },
-//       plugins: {
-//         tooltip: {
-//           callbacks: {
-//             title: () => false, // Disable tooltip title
-//             label: (context) => formatValue(context.parsed.y),
-//           },
-//           bodyColor: darkMode ? tooltipBodyColor.dark : tooltipBodyColor.light,
-//           backgroundColor: darkMode ? tooltipBgColor.dark : tooltipBgColor.light,
-//           borderColor: darkMode ? tooltipBorderColor.dark : tooltipBorderColor.light,
-//         },
-//         legend: {
-//           display: false,
-//         },
-//       },
-//       interaction: {
-//         intersect: false,
-//         mode: 'nearest',
-//       },
-//       maintainAspectRatio: false,
-//     },
-//   });
-
-//   document.addEventListener('darkMode', (e) => {
-//     const { mode } = e.detail;
-//     if (mode === 'on') {
-//       chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.dark;
-//       chart.options.plugins.tooltip.backgroundColor = tooltipBgColor.dark;
-//       chart.options.plugins.tooltip.borderColor = tooltipBorderColor.dark;
-//     } else {
-//       chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.light;
-//       chart.options.plugins.tooltip.backgroundColor = tooltipBgColor.light;
-//       chart.options.plugins.tooltip.borderColor = tooltipBorderColor.light;
-//     }
-//     chart.update('none');
-//   });
-// };
-// dashboardCard01();
-
-const dashboardCard01 = () => {
-    const ctx = document.getElementById("dashboard-card-01");
-    if (!ctx) return;
-
-    const darkMode = localStorage.getItem("dark-mode") === "true";
-
-    // Pull the 6-month arrays from the Laravel bridge
-    const chartLabels = window.dashboardData.labels;
-    const chartDataPoints = window.dashboardData.posts;
-
-    const tooltipBodyColor = { light: "#6B7280", dark: "#9CA3AF" };
-    const tooltipBgColor = { light: "#ffffff", dark: "#374151" };
-    const tooltipBorderColor = { light: "#E5E7EB", dark: "#4B5563" };
-
-    const chart = new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: chartLabels,
-            datasets: [
-                {
-                    data: chartDataPoints,
-                    fill: true,
-                    backgroundColor: function (context) {
-                        const chart = context.chart;
-                        const { ctx, chartArea } = chart;
-                        if (!chartArea) return; // Prevents error on initial load
-                        return chartAreaGradient(ctx, chartArea, [
-                            {
-                                stop: 0,
-                                color: `rgba(${hexToRGB("#8470FF")}, 0)`,
-                            },
-                            {
-                                stop: 1,
-                                color: `rgba(${hexToRGB("#8470FF")}, 0.2)`,
-                            },
-                        ]);
-                    },
-                    borderColor: "#8470FF",
-                    borderWidth: 2,
-                    pointRadius: 2,
-                    pointHoverRadius: 4,
-                    pointBackgroundColor: "#8470FF",
-                    pointHoverBackgroundColor: "#8470FF",
-                    pointBorderWidth: 0,
-                    pointHoverBorderWidth: 0,
-                    clip: 20,
-                    tension: 0.3, // Smoother curve for the 6-month trend
-                },
-            ],
-        },
-        options: {
-            layout: { padding: 20 },
-            scales: {
-                y: {
-                    display: false,
-                    beginAtZero: true,
-                },
-                x: {
-                    type: "time",
-                    time: {
-                        // This MUST match the PHP format 'm-01-Y'
-                        parser: "MM-DD-YYYY",
-                        unit: "month",
-                    },
-                    display: false,
-                },
-            },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        title: () => false,
-                        label: (context) => `Posts: ${context.parsed.y}`,
-                    },
-                    bodyColor: darkMode
-                        ? tooltipBodyColor.dark
-                        : tooltipBodyColor.light,
-                    backgroundColor: darkMode
-                        ? tooltipBgColor.dark
-                        : tooltipBgColor.light,
-                    borderColor: darkMode
-                        ? tooltipBorderColor.dark
-                        : tooltipBorderColor.light,
-                },
-                legend: { display: false },
-            },
-            interaction: {
-                intersect: false,
-                mode: "nearest",
-            },
-            maintainAspectRatio: false,
-        },
-    });
-
-    // Handle Real-time Dark Mode switching
-    document.addEventListener("darkMode", (e) => {
-        const { mode } = e.detail;
-        const isDark = mode === "on";
-
-        chart.options.plugins.tooltip.bodyColor = isDark
-            ? tooltipBodyColor.dark
-            : tooltipBodyColor.light;
-        chart.options.plugins.tooltip.backgroundColor = isDark
-            ? tooltipBgColor.dark
-            : tooltipBgColor.light;
-        chart.options.plugins.tooltip.borderColor = isDark
-            ? tooltipBorderColor.dark
-            : tooltipBorderColor.light;
-
-        chart.update("none");
-    });
-};
-
-dashboardCard01();
-
-// Init #dashboard-02 chart
-const dashboardCard02 = () => {
-    const ctx = document.getElementById("dashboard-card-02");
-    if (!ctx) return;
-
-    const darkMode = localStorage.getItem("dark-mode") === "true";
-
-    const tooltipBodyColor = {
-        light: "#6B7280",
-        dark: "#9CA3AF",
-    };
-
-    const tooltipBgColor = {
-        light: "#ffffff",
-        dark: "#374151",
-    };
-
-    const tooltipBorderColor = {
-        light: "#E5E7EB",
-        dark: "#4B5563",
-    };
-
-    // eslint-disable-next-line no-unused-vars
-    const chart = new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: [
-                "12-01-2022",
-                "01-01-2023",
-                "02-01-2023",
-                "03-01-2023",
-                "04-01-2023",
-                "05-01-2023",
-                "06-01-2023",
-                "07-01-2023",
-                "08-01-2023",
-                "09-01-2023",
-                "10-01-2023",
-                "11-01-2023",
-                "12-01-2023",
-                "01-01-2024",
-                "02-01-2024",
-                "03-01-2024",
-                "04-01-2024",
-                "05-01-2024",
-                "06-01-2024",
-                "07-01-2024",
-                "08-01-2024",
-                "09-01-2024",
-                "10-01-2024",
-                "11-01-2024",
-                "12-01-2024",
-                "01-01-2025",
-            ],
-            datasets: [
-                // Indigo line
-                {
-                    data: [
-                        622, 622, 426, 471, 365, 365, 238, 324, 288, 206, 324,
-                        324, 500, 409, 409, 273, 232, 273, 500, 570, 767, 808,
-                        685, 767, 685, 685,
-                    ],
-                    fill: true,
-                    backgroundColor: function (context) {
-                        const chart = context.chart;
-                        const { ctx, chartArea } = chart;
-                        return chartAreaGradient(ctx, chartArea, [
-                            {
-                                stop: 0,
-                                color: `rgba(${hexToRGB("#8470FF")}, 0)`,
-                            },
-                            {
-                                stop: 1,
-                                color: `rgba(${hexToRGB("#8470FF")}, 0.2)`,
-                            },
-                        ]);
-                    },
-                    borderColor: "#8470FF",
-                    borderWidth: 2,
-                    pointRadius: 0,
-                    pointHoverRadius: 3,
-                    pointBackgroundColor: "#8470FF",
-                    pointHoverBackgroundColor: "#8470FF",
-                    pointBorderWidth: 0,
-                    pointHoverBorderWidth: 0,
-                    clip: 20,
-                    tension: 0.2,
-                },
-                // Gray line
-                {
-                    data: [
-                        732, 610, 610, 504, 504, 504, 349, 349, 504, 342, 504,
-                        610, 391, 192, 154, 273, 191, 191, 126, 263, 349, 252,
-                        423, 622, 470, 532,
-                    ],
-                    borderColor: `rgba(${hexToRGB("#6B7280")}, 0.25)`,
-                    borderWidth: 2,
-                    pointRadius: 0,
-                    pointHoverRadius: 3,
-                    pointBackgroundColor: `rgba(${hexToRGB("#6B7280")}, 0.25)`,
-                    clip: 20,
-                    tension: 0.2,
-                },
-            ],
-        },
-        options: {
-            layout: {
-                padding: 20,
-            },
-            scales: {
-                y: {
-                    display: false,
-                    beginAtZero: true,
-                },
-                x: {
-                    type: "time",
-                    time: {
-                        parser: "MM-DD-YYYY",
-                        unit: "month",
-                    },
-                    display: false,
-                },
-            },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        title: () => false, // Disable tooltip title
-                        label: (context) => formatValue(context.parsed.y),
-                    },
-                    bodyColor: darkMode
-                        ? tooltipBodyColor.dark
-                        : tooltipBodyColor.light,
-                    backgroundColor: darkMode
-                        ? tooltipBgColor.dark
-                        : tooltipBgColor.light,
-                    borderColor: darkMode
-                        ? tooltipBorderColor.dark
-                        : tooltipBorderColor.light,
-                },
-                legend: {
-                    display: false,
-                },
-            },
-            interaction: {
-                intersect: false,
-                mode: "nearest",
-            },
-            maintainAspectRatio: false,
-        },
-    });
-
-    document.addEventListener("darkMode", (e) => {
-        const { mode } = e.detail;
-        if (mode === "on") {
-            chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.dark;
-            chart.options.plugins.tooltip.backgroundColor = tooltipBgColor.dark;
-            chart.options.plugins.tooltip.borderColor = tooltipBorderColor.dark;
-        } else {
-            chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.light;
-            chart.options.plugins.tooltip.backgroundColor =
-                tooltipBgColor.light;
-            chart.options.plugins.tooltip.borderColor =
-                tooltipBorderColor.light;
-        }
-        chart.update("none");
-    });
-};
-dashboardCard02();
-
-// Init #dashboard-03 chart
-const dashboardCard03 = () => {
-    const ctx = document.getElementById("dashboard-card-03");
-    if (!ctx) return;
-
-    const darkMode = localStorage.getItem("dark-mode") === "true";
-
-    const tooltipBodyColor = {
-        light: "#6B7280",
-        dark: "#9CA3AF",
-    };
-
-    const tooltipBgColor = {
-        light: "#ffffff",
-        dark: "#374151",
-    };
-
-    const tooltipBorderColor = {
-        light: "#E5E7EB",
-        dark: "#4B5563",
-    };
-
-    // eslint-disable-next-line no-unused-vars
-    const chart = new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: [
-                "12-01-2022",
-                "01-01-2023",
-                "02-01-2023",
-                "03-01-2023",
-                "04-01-2023",
-                "05-01-2023",
-                "06-01-2023",
-                "07-01-2023",
-                "08-01-2023",
-                "09-01-2023",
-                "10-01-2023",
-                "11-01-2023",
-                "12-01-2023",
-                "01-01-2024",
-                "02-01-2024",
-                "03-01-2024",
-                "04-01-2024",
-                "05-01-2024",
-                "06-01-2024",
-                "07-01-2024",
-                "08-01-2024",
-                "09-01-2024",
-                "10-01-2024",
-                "11-01-2024",
-                "12-01-2024",
-                "01-01-2025",
-            ],
-            datasets: [
-                // Indigo line
-                {
-                    data: [
-                        540, 466, 540, 466, 385, 432, 334, 334, 289, 289, 200,
-                        289, 222, 289, 289, 403, 554, 304, 289, 270, 134, 270,
-                        829, 344, 388, 364,
-                    ],
-                    fill: true,
-                    backgroundColor: function (context) {
-                        const chart = context.chart;
-                        const { ctx, chartArea } = chart;
-                        return chartAreaGradient(ctx, chartArea, [
-                            {
-                                stop: 0,
-                                color: `rgba(${hexToRGB("#8470FF")}, 0)`,
-                            },
-                            {
-                                stop: 1,
-                                color: `rgba(${hexToRGB("#8470FF")}, 0.2)`,
-                            },
-                        ]);
-                    },
-                    borderColor: "#8470FF",
-                    borderWidth: 2,
-                    pointRadius: 0,
-                    pointHoverRadius: 3,
-                    pointBackgroundColor: "#8470FF",
-                    pointHoverBackgroundColor: "#8470FF",
-                    pointBorderWidth: 0,
-                    pointHoverBorderWidth: 0,
-                    clip: 20,
-                    tension: 0.2,
-                },
-                // Gray line
-                {
-                    data: [
-                        689, 562, 477, 477, 477, 477, 458, 314, 430, 378, 430,
-                        498, 642, 350, 145, 145, 354, 260, 188, 188, 300, 300,
-                        282, 364, 660, 554,
-                    ],
-                    borderColor: `rgba(${hexToRGB("#6B7280")}, 0.25)`,
-                    borderWidth: 2,
-                    pointRadius: 0,
-                    pointHoverRadius: 3,
-                    pointBackgroundColor: `rgba(${hexToRGB("#6B7280")}, 0.25)`,
-                    clip: 20,
-                    tension: 0.2,
-                },
-            ],
-        },
-        options: {
-            layout: {
-                padding: 20,
-            },
-            scales: {
-                y: {
-                    display: false,
-                    beginAtZero: true,
-                },
-                x: {
-                    type: "time",
-                    time: {
-                        parser: "MM-DD-YYYY",
-                        unit: "month",
-                    },
-                    display: false,
-                },
-            },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        title: () => false, // Disable tooltip title
-                        label: (context) => formatValue(context.parsed.y),
-                    },
-                    bodyColor: darkMode
-                        ? tooltipBodyColor.dark
-                        : tooltipBodyColor.light,
-                    backgroundColor: darkMode
-                        ? tooltipBgColor.dark
-                        : tooltipBgColor.light,
-                    borderColor: darkMode
-                        ? tooltipBorderColor.dark
-                        : tooltipBorderColor.light,
-                },
-                legend: {
-                    display: false,
-                },
-            },
-            interaction: {
-                intersect: false,
-                mode: "nearest",
-            },
-            maintainAspectRatio: false,
-        },
-    });
-
-    document.addEventListener("darkMode", (e) => {
-        const { mode } = e.detail;
-        if (mode === "on") {
-            chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.dark;
-            chart.options.plugins.tooltip.backgroundColor = tooltipBgColor.dark;
-            chart.options.plugins.tooltip.borderColor = tooltipBorderColor.dark;
-        } else {
-            chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.light;
-            chart.options.plugins.tooltip.backgroundColor =
-                tooltipBgColor.light;
-            chart.options.plugins.tooltip.borderColor =
-                tooltipBorderColor.light;
-        }
-        chart.update("none");
-    });
-};
-dashboardCard03();
 
 // Init #dashboard-04 chart
 const dashboardCard04 = () => {
@@ -1135,165 +547,272 @@ const dashboardCard05 = () => {
 };
 dashboardCard05();
 
-// Init #dashboard-06 chart
-const dashboardCard06 = () => {
-    const ctx = document.getElementById("dashboard-card-06");
-    if (!ctx) return;
 
-    const darkMode = localStorage.getItem("dark-mode") === "true";
 
-    const tooltipTitleColor = {
-        light: "#1F2937",
-        dark: "#F3F4F6",
-    };
+// Helper for building standard mini-line charts (Cards 01, 02, 03)
+const buildMiniLineChart = (canvasId, lineColor) => {
+  const ctx = document.getElementById(canvasId);
+  if (!ctx) return null;
 
-    const tooltipBodyColor = {
-        light: "#6B7280",
-        dark: "#9CA3AF",
-    };
+  const labels = JSON.parse(ctx.getAttribute('data-labels') || '[]');
+  const values = JSON.parse(ctx.getAttribute('data-values') || '[]');
 
-    const tooltipBgColor = {
-        light: "#ffffff",
-        dark: "#374151",
-    };
-
-    const tooltipBorderColor = {
-        light: "#E5E7EB",
-        dark: "#4B5563",
-    };
-
-    // eslint-disable-next-line no-unused-vars
-    const chart = new Chart(ctx, {
-        type: "doughnut",
-        data: {
-            labels: ["United States", "Italy", "Other"],
-            datasets: [
-                {
-                    label: "Top Countries",
-                    data: [35, 30, 35],
-                    backgroundColor: ["#8470FF", "#67BFFF", "#4634B1"],
-                    hoverBackgroundColor: ["#755FF8", "#56B1F3", "#2F227C"],
-                    borderWidth: 0,
-                },
-            ],
-        },
-        options: {
-            cutout: "80%",
-            layout: {
-                padding: 24,
-            },
-            plugins: {
-                legend: {
-                    display: false,
-                },
-                htmlLegend: {
-                    // ID of the container to put the legend in
-                    containerID: "dashboard-card-06-legend",
-                },
-                tooltip: {
-                    titleColor: darkMode
-                        ? tooltipTitleColor.dark
-                        : tooltipTitleColor.light,
-                    bodyColor: darkMode
-                        ? tooltipBodyColor.dark
-                        : tooltipBodyColor.light,
-                    backgroundColor: darkMode
-                        ? tooltipBgColor.dark
-                        : tooltipBgColor.light,
-                    borderColor: darkMode
-                        ? tooltipBorderColor.dark
-                        : tooltipBorderColor.light,
-                },
-            },
-            interaction: {
-                intersect: false,
-                mode: "nearest",
-            },
-            animation: {
-                duration: 200,
-            },
-            maintainAspectRatio: false,
-        },
-        plugins: [
-            {
-                id: "htmlLegend",
-                afterUpdate(c, args, options) {
-                    const legendContainer = document.getElementById(
-                        options.containerID,
-                    );
-                    const ul = legendContainer.querySelector("ul");
-                    if (!ul) return;
-                    // Remove old legend items
-                    while (ul.firstChild) {
-                        ul.firstChild.remove();
-                    }
-                    // Reuse the built-in legendItems generator
-                    const items =
-                        c.options.plugins.legend.labels.generateLabels(c);
-                    items.forEach((item) => {
-                        const li = document.createElement("li");
-                        li.style.margin = "4px";
-                        // Button element
-                        const button = document.createElement("button");
-                        button.classList.add(
-                            "btn-xs",
-                            "bg-white",
-                            "dark:bg-gray-700",
-                            "text-gray-500",
-                            "dark:text-gray-400",
-                            "shadow-sm",
-                            "shadow-black/[0.08]",
-                            "rounded-full",
-                        );
-                        button.style.opacity = item.hidden ? ".3" : "";
-                        button.onclick = () => {
-                            c.toggleDataVisibility(item.index, !item.index);
-                            c.update();
-                        };
-                        // Color box
-                        const box = document.createElement("span");
-                        box.style.display = "block";
-                        box.style.width = "8px";
-                        box.style.height = "8px";
-                        box.style.backgroundColor = item.fillStyle;
-                        box.style.borderRadius = "2px";
-                        box.style.marginRight = "4px";
-                        box.style.pointerEvents = "none";
-                        // Label
-                        const label = document.createElement("span");
-                        label.style.display = "flex";
-                        label.style.alignItems = "center";
-                        const labelText = document.createTextNode(item.text);
-                        label.appendChild(labelText);
-                        li.appendChild(button);
-                        button.appendChild(box);
-                        button.appendChild(label);
-                        ul.appendChild(li);
-                    });
-                },
-            },
-        ],
-    });
-
-    document.addEventListener("darkMode", (e) => {
-        const { mode } = e.detail;
-        if (mode === "on") {
-            chart.options.plugins.tooltip.titleColor = tooltipTitleColor.dark;
-            chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.dark;
-            chart.options.plugins.tooltip.backgroundColor = tooltipBgColor.dark;
-            chart.options.plugins.tooltip.borderColor = tooltipBorderColor.dark;
-        } else {
-            chart.options.plugins.tooltip.titleColor = tooltipTitleColor.light;
-            chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.light;
-            chart.options.plugins.tooltip.backgroundColor =
-                tooltipBgColor.light;
-            chart.options.plugins.tooltip.borderColor =
-                tooltipBorderColor.light;
-        }
-        chart.update("none");
-    });
+  return new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: values,
+        borderColor: lineColor,
+        fill: false,
+        borderWidth: 2,
+        tension: 0.3,
+        pointRadius: 0,
+        pointHoverRadius: 3,
+      }],
+    },
+    options: {
+      layout: { padding: { top: 5, right: 15, left: 15, bottom: 5 } },
+      plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+      scales: { x: { display: false }, y: { display: false } },
+      maintainAspectRatio: false,
+    }
+  });
 };
-dashboardCard06();
+
+// Initialize Metric Cards
+const initDashboardCharts = () => {
+  const chart01 = buildMiniLineChart('dashboard-card-01', '#4F46E5'); // Indigo for articles
+  const chart02 = buildMiniLineChart('dashboard-card-02', '#0284C7'); // Sky blue for comments
+  const chart03 = buildMiniLineChart('dashboard-card-03', '#16A34A'); // Green for views traffic
+
+  // Keep your existing working doughnut setup
+  const ctx06 = document.getElementById('dashboard-card-06');
+  if (!ctx06) return;
+
+  const darkMode = localStorage.getItem('dark-mode') === 'true';
+  const tooltipTitleColor = { light: '#1F2937', dark: '#F3F4F6' };
+  const tooltipBodyColor = { light: '#6B7280', dark: '#9CA3AF' };
+  const tooltipBgColor = { light: '#ffffff', dark: '#374151' };
+  const tooltipBorderColor = { light: '#E5E7EB', dark: '#4B5563' };
+
+  const chart06 = new Chart(ctx06, {
+    type: 'doughnut',
+    data: {
+      labels: JSON.parse(ctx06.getAttribute('data-labels') || '[]'),
+      datasets: [{
+        label: 'Top Countries',
+        data: JSON.parse(ctx06.getAttribute('data-values') || '[]'),
+        backgroundColor: ['#8470FF', '#67BFFF', '#4634B1'],
+        hoverBackgroundColor: ['#755FF8', '#56B1F3', '#2F227C'],
+        borderWidth: 0,
+      }],
+    },
+    options: {
+      cutout: '80%',
+      layout: { padding: 24 },
+      plugins: {
+        legend: { display: false },
+        htmlLegend: { containerID: 'dashboard-card-06-legend' },
+        tooltip: {
+          titleColor: darkMode ? tooltipTitleColor.dark : tooltipTitleColor.light,
+          bodyColor: darkMode ? tooltipBodyColor.dark : tooltipBodyColor.light,
+          backgroundColor: darkMode ? tooltipBgColor.dark : tooltipBgColor.light,
+          borderColor: darkMode ? tooltipBorderColor.dark : tooltipBorderColor.light,
+        },
+      },
+      interaction: { intersect: false, mode: 'nearest' },
+      animation: { duration: 200 },
+      maintainAspectRatio: false,
+    },
+    plugins: [{
+      id: 'htmlLegend',
+      afterUpdate(c, args, options) {
+        const legendContainer = document.getElementById(options.containerID);
+        const ul = legendContainer.querySelector('ul');
+        if (!ul) return;
+        while (ul.firstChild) ul.firstChild.remove();
+        
+        const items = c.options.plugins.legend.labels.generateLabels(c);
+        items.forEach((item) => {
+          const li = document.createElement('li');
+          li.style.margin = '4px';
+          const button = document.createElement('button');
+          button.classList.add('btn-xs', 'bg-white', 'dark:bg-gray-700', 'text-gray-500', 'dark:text-gray-400', 'shadow-sm', 'rounded-full');
+          button.style.opacity = item.hidden ? '.3' : '';
+          button.onclick = () => {
+            c.toggleDataVisibility(item.index);
+            c.update();
+          };
+          const box = document.createElement('span');
+          box.style.display = 'block';
+          box.style.width = '8px';
+          box.style.height = '8px';
+          box.style.backgroundColor = item.fillStyle;
+          box.style.borderRadius = '2px';
+          box.style.marginRight = '4px';
+          
+          const label = document.createElement('span');
+          label.style.display = 'flex';
+          label.style.alignItems = 'center';
+          label.appendChild(document.createTextNode(item.text));
+          
+          li.appendChild(button);
+          button.appendChild(box);
+          button.appendChild(label);
+          ul.appendChild(li);
+        });
+      },
+    }],
+  });
+
+  // Combined Dark Mode switch updates for all visual elements
+  document.addEventListener('darkMode', (e) => {
+    const { mode } = e.detail;
+    const isDark = mode === 'on';
+    
+    chart06.options.plugins.tooltip.titleColor = isDark ? tooltipTitleColor.dark : tooltipTitleColor.light;
+    chart06.options.plugins.tooltip.bodyColor = isDark ? tooltipBodyColor.dark : tooltipBodyColor.light;
+    chart06.options.plugins.tooltip.backgroundColor = isDark ? tooltipBgColor.dark : tooltipBgColor.light;
+    chart06.options.plugins.tooltip.borderColor = isDark ? tooltipBorderColor.dark : tooltipBorderColor.light;
+    chart06.update('none');
+  });
+};
+
+initDashboardCharts();
+
+
+// Init #dashboard-06 chart
+// const dashboardCard06 = () => {
+//   const ctx = document.getElementById('dashboard-card-06');
+//   if (!ctx) return;
+
+//   const darkMode = localStorage.getItem('dark-mode') === 'true';
+
+//   const tooltipTitleColor = { light: '#1F2937', dark: '#F3F4F6' };
+//   const tooltipBodyColor = { light: '#6B7280', dark: '#9CA3AF' };
+//   const tooltipBgColor = { light: '#ffffff', dark: '#374151' };
+//   const tooltipBorderColor = { light: '#E5E7EB', dark: '#4B5563' }; 
+
+//   // Parse server-side values directly out of DOM element datasets
+//   const chartLabels = JSON.parse(ctx.getAttribute('data-labels') || '[]');
+//   const chartValues = JSON.parse(ctx.getAttribute('data-values') || '[]');
+
+//   console.log(chartLabels);
+  
+
+//   // eslint-disable-next-line no-unused-vars
+//   const chart = new Chart(ctx, {
+//     type: 'doughnut',
+//     data: {
+//       labels: chartLabels,
+//       datasets: [
+//         {
+//           label: 'Top Countries',
+//           data: chartValues,
+//           backgroundColor: [
+//             '#8470FF',
+//             '#67BFFF',
+//             '#4634B1',
+//           ],
+//           hoverBackgroundColor: [
+//             '#755FF8',
+//             '#56B1F3',
+//             '#2F227C',
+//           ],
+//           borderWidth: 0,
+//         },
+//       ],
+//     },
+//     options: {
+//       cutout: '80%',
+//       layout: {
+//         padding: 24,
+//       },
+//       plugins: {
+//         legend: {
+//           display: false,
+//         },
+//         htmlLegend: {
+//           containerID: 'dashboard-card-06-legend',
+//         },
+//         tooltip: {
+//           titleColor: darkMode ? tooltipTitleColor.dark : tooltipTitleColor.light,
+//           bodyColor: darkMode ? tooltipBodyColor.dark : tooltipBodyColor.light,
+//           backgroundColor: darkMode ? tooltipBgColor.dark : tooltipBgColor.light,
+//           borderColor: darkMode ? tooltipBorderColor.dark : tooltipBorderColor.light,
+//         },        
+//       },
+//       interaction: {
+//         intersect: false,
+//         mode: 'nearest',
+//       },
+//       animation: {
+//         duration: 200,
+//       },
+//       maintainAspectRatio: false,
+//     },
+//     plugins: [{
+//       id: 'htmlLegend',
+//       afterUpdate(c, args, options) {
+//         const legendContainer = document.getElementById(options.containerID);
+//         const ul = legendContainer.querySelector('ul');
+//         if (!ul) return;
+//         while (ul.firstChild) {
+//           ul.firstChild.remove();
+//         }
+//         const items = c.options.plugins.legend.labels.generateLabels(c);
+//         items.forEach((item) => {
+//           const li = document.createElement('li');
+//           li.style.margin = '4px';
+//           const button = document.createElement('button');
+//           button.classList.add('btn-xs', 'bg-white', 'dark:bg-gray-700', 'text-gray-500', 'dark:text-gray-400', 'shadow-sm', 'shadow-black/[0.08]', 'rounded-full');
+//           button.style.opacity = item.hidden ? '.3' : '';
+//           button.onclick = () => {
+//             c.toggleDataVisibility(item.index);
+//             c.update();
+//           };
+//           const box = document.createElement('span');
+//           box.style.display = 'block';
+//           box.style.width = '8px';
+//           box.style.height = '8px';
+//           box.style.backgroundColor = item.fillStyle;
+//           box.style.borderRadius = '2px';
+//           box.style.marginRight = '4px';
+//           box.style.pointerEvents = 'none';
+//           const label = document.createElement('span');
+//           label.style.display = 'flex';
+//           label.style.alignItems = 'center';
+//           const labelText = document.createTextNode(item.text);
+//           label.appendChild(labelText);
+//           li.appendChild(button);
+//           button.appendChild(box);
+//           button.appendChild(label);
+//           ul.appendChild(li);
+//         });
+//       },
+//     }],
+//   });
+  
+//   document.addEventListener('darkMode', (e) => {
+//     const { mode } = e.detail;
+//     if (mode === 'on') {
+//       chart.options.plugins.tooltip.titleColor = tooltipTitleColor.dark;
+//       chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.dark;
+//       chart.options.plugins.tooltip.backgroundColor = tooltipBgColor.dark;
+//       chart.options.plugins.tooltip.borderColor = tooltipBorderColor.dark;      
+//     } else {
+//       chart.options.plugins.tooltip.titleColor = tooltipTitleColor.light;
+//       chart.options.plugins.tooltip.bodyColor = tooltipBodyColor.light;
+//       chart.options.plugins.tooltip.backgroundColor = tooltipBgColor.light;
+//       chart.options.plugins.tooltip.borderColor = tooltipBorderColor.light;      
+//     }
+//     chart.update('none');
+//   }); 
+// };
+// dashboardCard06();
+
+
 
 // Init #dashboard-08 chart
 const dashboardCard08 = () => {

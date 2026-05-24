@@ -45,7 +45,7 @@
         </div>
 
         <!-- Cards -->
-        <div class="grid grid-cols-12 gap-6">
+        {{-- <div class="grid grid-cols-12 gap-6">
 
 
 
@@ -110,8 +110,6 @@
                     <canvas id="dashboard-card-03" width="389" height="128"></canvas>
                 </div>
             </div>
-
-
 
 
             <!-- Doughnut chart (Top Countries) -->
@@ -363,18 +361,479 @@
 
 
 
+        </div> --}}
+
+        {{-- <div class="grid grid-cols-12 gap-6">
+
+            <div
+                class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+                <div class="px-5 pt-5">
+                    <header class="flex justify-between items-start mb-2">
+                        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Total Articles</h2>
+                    </header>
+                    <div class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">Published Content
+                    </div>
+                    <div class="flex items-start">
+                        <div class="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">
+                            {{ number_format($stats['posts_count']) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="grow max-sm:max-h-[128px] xl:max-h-[128px]">
+                    <canvas id="dashboard-card-01" width="389" height="128"></canvas>
+                </div>
+            </div>
+
+            <div
+                class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+                <div class="px-5 pt-5">
+                    <header class="flex justify-between items-start mb-2">
+                        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Reader Comments</h2>
+                    </header>
+                    <div class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">Community
+                        Interaction</div>
+                    <div class="flex items-start">
+                        <div class="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">
+                            {{ number_format($stats['comments_count']) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="grow max-sm:max-h-[128px] xl:max-h-[128px]">
+                    <canvas id="dashboard-card-02" width="389" height="128"></canvas>
+                </div>
+            </div>
+
+            <div
+                class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+                <div class="px-5 pt-5">
+                    <header class="flex justify-between items-start mb-2">
+                        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Traffic & Content Value</h2>
+                    </header>
+                    <div class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">Views vs.
+                        Appreciations</div>
+                    <div class="flex items-start space-x-6">
+                        <div>
+                            <span class="text-xs text-gray-400 block">Total Impressions</span>
+                            <div class="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                                {{ number_format($stats['total_views']) }}</div>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-400 block">Total Likes</span>
+                            <div class="text-2xl font-bold text-green-600 dark:text-green-400">
+                                +{{ number_format($stats['total_likes']) }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grow max-sm:max-h-[128px] xl:max-h-[128px] mt-4">
+                    <canvas id="dashboard-card-03" width="389" height="128"></canvas>
+                </div>
+            </div>
+
+
+            <div
+                class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+                <header class="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
+                    <h2 class="font-semibold text-gray-800 dark:text-gray-100">Top Countries</h2>
+                </header>
+                <div class="grow flex flex-col justify-center">
+                    <div>
+                        <canvas id="dashboard-card-06" width="389" height="260"
+                            data-labels="{{ json_encode($countryLabels) }}"
+                            data-values="{{ json_encode($countryData) }}"></canvas>
+                    </div>
+                    <div id="dashboard-card-06-legend" class="px-5 pt-2 pb-6">
+                        <ul class="flex flex-wrap justify-center -m-1"></ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="col-span-full xl:col-span-8 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+                <header class="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
+                    <h2 class="font-semibold text-gray-800 dark:text-gray-100">Recent Posts</h2>
+                </header>
+                <div class="p-3">
+                    <div class="overflow-x-auto">
+                        <table class="table-auto w-full dark:text-gray-300">
+                            <thead
+                                class="text-xs uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50 rounded-sm">
+                                <tr>
+                                    <th class="p-2">
+                                        <div class="font-semibold text-left">Post Title</div>
+                                    </th>
+                                    <th class="p-2">
+                                        <div class="font-semibold text-center">Category</div>
+                                    </th>
+                                    <th class="p-2">
+                                        <div class="font-semibold text-center">Comments</div>
+                                    </th>
+                                    <th class="p-2">
+                                        <div class="font-semibold text-center">Date</div>
+                                    </th>
+                                    <th class="p-2">
+                                        <div class="font-semibold text-center">Status</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm font-medium divide-y divide-gray-100 dark:divide-gray-700/60">
+                                @forelse ($recentPosts as $post)
+                                    <tr>
+                                        <td class="p-2">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="shrink-0 mr-2 sm:mr-3 w-9 h-9 flex items-center justify-center bg-indigo-100 dark:bg-indigo-500/30 rounded-full">
+                                                    <svg class="w-5 h-5 text-indigo-500" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z">
+                                                        </path>
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M14 2v4h4"></path>
+                                                    </svg>
+                                                </div>
+                                                <div class="text-gray-800 dark:text-gray-100 truncate max-w-[200px]">
+                                                    {{ $post->title }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div class="text-center text-gray-500 dark:text-gray-400">
+                                                {{ $post->category->name ?? 'Uncategorized' }}
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div class="text-center text-sky-500">{{ $post->comments_count }}</div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div class="text-center text-gray-500">
+                                                {{ $post->created_at->format('M d, Y') }}
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div class="text-center">
+                                                <span
+                                                    class="inline-flex font-medium rounded-full px-2.5 py-0.5 {{ $post->is_published ? 'bg-green-100 dark:bg-green-500/30 text-green-600 dark:text-green-400' : 'bg-yellow-100 dark:bg-yellow-500/30 text-yellow-600 dark:text-yellow-400' }}">
+                                                    {{ $post->is_published ? 'Published' : 'Draft' }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="p-4 text-center text-gray-400">No recent posts
+                                            found.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-span-full xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+                <header class="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
+                    <h2 class="font-semibold text-gray-800 dark:text-gray-100">Live Interactions</h2>
+                </header>
+                <div class="p-3">
+                    <div>
+                        <header
+                            class="text-xs uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50 rounded-sm font-semibold p-2">
+                            Latest Activity Feed
+                        </header>
+                        <ul class="my-1 divide-y divide-gray-100 dark:divide-gray-700/60">
+                            @forelse($recentActivities as $activity)
+                                <li class="flex px-2 py-2">
+                                    <div
+                                        class="w-9 h-9 rounded-full shrink-0 bg-violet-500 flex items-center justify-center text-white mr-3">
+                                        <svg class="w-5 h-5 fill-current" viewBox="0 0 36 36">
+                                            <path
+                                                d="M18 10c-4.4 0-8 3.1-8 7s3.6 7 8 7h.6l5.4 2v-4.4c1.2-1.2 2-2.8 2-4.6 0-3.9-3.6-7-8-7zm4 10.8v2.3L18.9 22H18c-3.3 0-6-2.2-6-5s2.7-5 6-5 6 2.2 6 5c0 2.2-2 3.8-2 3.8z" />
+                                        </svg>
+                                    </div>
+                                    <div class="grow flex items-center text-sm">
+                                        <div class="grow flex justify-between items-center">
+                                            <div class="text-gray-600 dark:text-gray-300">
+                                                <span
+                                                    class="font-semibold text-gray-800 dark:text-gray-100">{{ $activity->user->name ?? 'Guest Reader' }}</span>
+                                                commented on
+                                                <span
+                                                    class="font-medium text-indigo-500">{{ Str::limit($activity->post->title ?? 'an article', 20) }}</span>
+                                            </div>
+                                            <div class="shrink-0 ml-2">
+                                                <span
+                                                    class="text-xs text-gray-400">{{ $activity->created_at->diffForHumans() }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @empty
+                                <li class="p-4 text-center text-xs text-gray-400">No user responses logged.</li>
+                            @endforelse
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div> --}}
+
+
+        <div class="grid grid-cols-12 gap-6">
+
+            <div
+                class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+                <div class="px-5 pt-5">
+                    <header class="flex justify-between items-start mb-2">
+                        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Total Articles</h2>
+                    </header>
+                    <div class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">Published Content
+                    </div>
+                    <div class="flex items-start">
+                        <div class="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">
+                            {{ number_format($stats['posts_count']) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="grow max-sm:max-h-[128px] xl:max-h-[128px]">
+                    <canvas id="dashboard-card-01" width="389" height="128"
+                        data-labels="{{ json_encode($labels) }}"
+                        data-values="{{ json_encode($articlesData) }}"></canvas>
+                </div>
+            </div>
+
+            <div
+                class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+                <div class="px-5 pt-5">
+                    <header class="flex justify-between items-start mb-2">
+                        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Reader Comments</h2>
+                    </header>
+                    <div class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">Community
+                        Interaction</div>
+                    <div class="flex items-start">
+                        <div class="text-3xl font-bold text-gray-800 dark:text-gray-100 mr-2">
+                            {{ number_format($stats['comments_count']) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="grow max-sm:max-h-[128px] xl:max-h-[128px]">
+                    <canvas id="dashboard-card-02" width="389" height="128"
+                        data-labels="{{ json_encode($labels) }}"
+                        data-values="{{ json_encode($commentsData) }}"></canvas>
+                </div>
+            </div>
+
+            <div
+                class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+                <div class="px-5 pt-5">
+                    <header class="flex justify-between items-start mb-2">
+                        <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">Traffic & Content Value</h2>
+                    </header>
+                    <div class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase mb-1">Views vs.
+                        Appreciations</div>
+                    <div class="flex items-start space-x-6">
+                        <div>
+                            <span class="text-xs text-gray-400 block">Total Impressions</span>
+                            <div class="text-2xl font-bold text-gray-800 dark:text-gray-100">
+                                {{ number_format($stats['total_views']) }}
+                            </div>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-400 block">Total Likes</span>
+                            <div class="text-2xl font-bold text-green-600 dark:text-green-400">
+                                +{{ number_format($stats['total_likes']) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grow max-sm:max-h-[128px] xl:max-h-[128px] mt-4">
+                    <canvas id="dashboard-card-03" width="389" height="128"
+                        data-labels="{{ json_encode($labels) }}" data-values="{{ json_encode($viewsData) }}"></canvas>
+                </div>
+            </div>
+
+            <div
+                class="flex flex-col col-span-full sm:col-span-6 xl:col-span-4 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+                <header class="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
+                    <h2 class="font-semibold text-gray-800 dark:text-gray-100">Top Countries</h2>
+                </header>
+                <div class="grow flex flex-col justify-center">
+                    <div>
+                        <canvas id="dashboard-card-06" width="389" height="260"
+                            data-labels="{{ json_encode($countryLabels) }}"
+                            data-values="{{ json_encode($countryData) }}"></canvas>
+                    </div>
+                    <div id="dashboard-card-06-legend" class="px-5 pt-2 pb-6">
+                        <ul class="flex flex-wrap justify-center -m-1"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-span-full xl:col-span-8 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+                <header class="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
+                    <h2 class="font-semibold text-gray-800 dark:text-gray-100">Recent Posts</h2>
+                </header>
+                <div class="p-3">
+                    <div class="overflow-x-auto">
+                        <table class="table-auto w-full dark:text-gray-300">
+                            <thead
+                                class="text-xs uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50 rounded-sm">
+                                <tr>
+                                    <th class="p-2">
+                                        <div class="font-semibold text-left">Post Title</div>
+                                    </th>
+                                    <th class="p-2">
+                                        <div class="font-semibold text-center">Category</div>
+                                    </th>
+                                    <th class="p-2">
+                                        <div class="font-semibold text-center">Comments</div>
+                                    </th>
+                                    <th class="p-2">
+                                        <div class="font-semibold text-center">Date</div>
+                                    </th>
+                                    <th class="p-2">
+                                        <div class="font-semibold text-center">Status</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm font-medium divide-y divide-gray-100 dark:divide-gray-700/60">
+                                @forelse ($recentPosts as $post)
+                                    <tr>
+                                        <td class="p-2">
+                                            <div class="flex items-center">
+                                                <div
+                                                    class="shrink-0 mr-2 sm:mr-3 w-9 h-9 flex items-center justify-center bg-indigo-100 dark:bg-indigo-500/30 rounded-full">
+                                                    <svg class="w-5 h-5 text-indigo-500" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z">
+                                                        </path>
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M14 2v4h4"></path>
+                                                    </svg>
+                                                </div>
+                                                <div class="text-gray-800 dark:text-gray-100 truncate max-w-[200px]">
+                                                    {{ $post->title }}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div class="text-center text-gray-500 dark:text-gray-400">
+                                                {{ $post->category->name ?? 'Uncategorized' }}</div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div class="text-center text-sky-500">{{ $post->comments_count }}</div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div class="text-center text-gray-500">
+                                                {{ $post->created_at->format('M d, Y') }}</div>
+                                        </td>
+                                        <td class="p-2">
+                                            <div class="text-center">
+                                                <span
+                                                    class="inline-flex font-medium rounded-full px-2.5 py-0.5 {{ $post->is_published ? 'bg-green-100 dark:bg-green-500/30 text-green-600 dark:text-green-400' : 'bg-yellow-100 dark:bg-yellow-500/30 text-yellow-600 dark:text-yellow-400' }}">
+                                                    {{ $post->is_published ? 'Published' : 'Draft' }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="p-4 text-center text-gray-400">No recent posts
+                                            found.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-span-full xl:col-span-12 bg-white dark:bg-gray-800 shadow-sm rounded-xl">
+                <header class="px-5 py-4 border-b border-gray-100 dark:border-gray-700/60">
+                    <h2 class="font-semibold text-gray-800 dark:text-gray-100">Recent Activity</h2>
+                </header>
+                <div class="p-3">
+
+                    @php
+                        // Group the collection dynamically by its day categorization
+                        $groupedActivities = $recentActivities->groupBy(function ($activity) {
+                            if ($activity->created_at->isToday()) {
+                                return 'Today';
+                            } elseif ($activity->created_at->isYesterday()) {
+                                return 'Yesterday';
+                            }
+                            return $activity->created_at->format('F d, Y');
+                        });
+                    @endphp
+
+                    @forelse($groupedActivities as $dayHeader => $activities)
+                        <div class="{{ !$loop->first ? 'mt-4' : '' }}">
+                            <header
+                                class="text-xs uppercase text-gray-400 dark:text-gray-500 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50 rounded-sm font-semibold p-2">
+                                {{ $dayHeader }}
+                            </header>
+                            <ul class="my-1">
+                                @foreach ($activities as $activity)
+                                    <li class="flex px-2">
+                                        <div
+                                            class="w-9 h-9 rounded-full shrink-0 bg-violet-500 my-2 mr-3 flex items-center justify-center text-white">
+                                            <svg class="w-5 h-5 fill-current" viewBox="0 0 36 36">
+                                                <path
+                                                    d="M18 10c-4.4 0-8 3.1-8 7s3.6 7 8 7h.6l5.4 2v-4.4c1.2-1.2 2-2.8 2-4.6 0-3.9-3.6-7-8-7zm4 10.8v2.3L18.9 22H18c-3.3 0-6-2.2-6-5s2.7-5 6-5 6 2.2 6 5c0 2.2-2 3.8-2 3.8z" />
+                                            </svg>
+                                        </div>
+
+                                        <div
+                                            class="grow flex items-center {{ !$loop->last ? 'border-b border-gray-100 dark:border-gray-700/60' : '' }} text-sm py-2">
+                                            <div class="grow flex justify-between items-center">
+                                                <div class="self-center text-gray-600 dark:text-gray-300">
+                                                    <span class="font-medium text-gray-800 dark:text-gray-100">
+                                                        {{ $activity->user->name ?? 'Guest Reader' }}
+                                                    </span>
+                                                    commented on
+                                                    <span class="font-medium text-gray-800 dark:text-gray-100">
+                                                        {{ Str::limit($activity->post->title ?? 'an article', 28) }}
+                                                    </span>
+                                                    <span class="block text-xs text-gray-400 mt-0.5">
+                                                        {{ $activity->created_at->diffForHumans() }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="shrink-0 self-center ml-2">
+                                                    @if (isset($activity->post))
+                                                        <a class="font-medium text-violet-500 hover:text-violet-600 dark:hover:text-violet-400 inline-flex items-center"
+                                                            href="#"
+                                                            {{-- href="{{ route('posts.show', $activity->post->id) }}" --}}
+                                                            target="_blank">
+                                                            View<span class="hidden sm:inline">&nbsp;-&gt;</span>
+                                                        </a>
+                                                    @else
+                                                        <span class="text-xs text-gray-400 italic">Unavailable</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @empty
+                        <div class="p-6 text-center text-sm text-gray-400 dark:text-gray-500">
+                            No user interaction records tracked for this dashboard session.
+                        </div>
+                    @endforelse
+
+                </div>
+            </div>
+
+
         </div>
+
+
 
     </div>
 </x-app-layout>
-
-{{-- @dd($data); --}}
-@push('scripts')
-    <script>
-        // Inject PHP data into JS
-        window.dashboardData = {
-            labels: @json($labels),
-            posts: @json($data),
-        };
-    </script>
-@endpush
