@@ -15,7 +15,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 
 Route::middleware('auth')->group(function () {
 
-Route::post('posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
+Route::patch('posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
     Route::resource('posts', PostController::class)->except(['show']);
 
     Route::prefix('profile')->as('profile.')->group(function () {
