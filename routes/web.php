@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+
+Route::post('posts/{id}/restore', [PostController::class, 'restore'])->name('posts.restore');
+    Route::resource('posts', PostController::class)->except(['show']);
 
     Route::prefix('profile')->as('profile.')->group(function () {
 
